@@ -1,0 +1,272 @@
+{
+  "clientes": {
+    "GET /api/clientes": {
+      "description": "Listar todos os clientes",
+      "response": [
+        {
+          "id": 1,
+          "nome": "João Silva",
+          "cpf": "123.456.789-00",
+          "email": "joao@email.com",
+          "contas": []
+        }
+      ]
+    },
+    "GET /api/clientes/{id}": {
+      "description": "Buscar cliente por ID",
+      "response": {
+        "id": 1,
+        "nome": "João Silva",
+        "cpf": "123.456.789-00",
+        "email": "joao@email.com",
+        "contas": []
+      }
+    },
+    "POST /api/clientes": {
+      "description": "Criar novo cliente",
+      "request": {
+        "nome": "Maria Santos",
+        "cpf": "987.654.321-00",
+        "email": "maria@email.com"
+      },
+      "response": {
+        "id": 2,
+        "nome": "Maria Santos",
+        "cpf": "987.654.321-00",
+        "email": "maria@email.com",
+        "contas": []
+      }
+    },
+    "PUT /api/clientes/{id}": {
+      "description": "Atualizar cliente",
+      "request": {
+        "nome": "João Silva Santos",
+        "cpf": "123.456.789-00",
+        "email": "joao.silva@email.com"
+      },
+      "response": {
+        "id": 1,
+        "nome": "João Silva Santos",
+        "cpf": "123.456.789-00",
+        "email": "joao.silva@email.com",
+        "contas": []
+      }
+    },
+    "DELETE /api/clientes/{id}": {
+      "description": "Excluir cliente",
+      "response": "204 No Content"
+    }
+  },
+  "contas": {
+    "GET /api/contas": {
+      "description": "Listar todas as contas",
+      "response": [
+        {
+          "id": 1,
+          "numero": "12345-6",
+          "cliente": {
+            "id": 1,
+            "nome": "João Silva",
+            "cpf": "123.456.789-00",
+            "email": "joao@email.com"
+          },
+          "saldo": 1000.00,
+          "tipo": "CORRENTE"
+        }
+      ]
+    },
+    "GET /api/contas/{id}": {
+      "description": "Buscar conta por ID",
+      "response": {
+        "id": 1,
+        "numero": "12345-6",
+        "cliente": {
+          "id": 1,
+          "nome": "João Silva",
+          "cpf": "123.456.789-00",
+          "email": "joao@email.com"
+        },
+        "saldo": 1000.00,
+        "tipo": "CORRENTE"
+      }
+    },
+    "POST /api/contas": {
+      "description": "Criar nova conta",
+      "request": {
+        "numero": "67890-1",
+        "cliente": {
+          "id": 2
+        },
+        "saldo": 0.00,
+        "tipo": "POUPANCA"
+      },
+      "response": {
+        "id": 2,
+        "numero": "67890-1",
+        "cliente": {
+          "id": 2,
+          "nome": "Maria Santos",
+          "cpf": "987.654.321-00",
+          "email": "maria@email.com"
+        },
+        "saldo": 0.00,
+        "tipo": "POUPANCA"
+      }
+    },
+    "PUT /api/contas/{id}": {
+      "description": "Atualizar conta",
+      "request": {
+        "numero": "12345-6",
+        "cliente": {
+          "id": 1
+        },
+        "saldo": 1000.00,
+        "tipo": "CORRENTE"
+      },
+      "response": {
+        "id": 1,
+        "numero": "12345-6",
+        "cliente": {
+          "id": 1,
+          "nome": "João Silva",
+          "cpf": "123.456.789-00",
+          "email": "joao@email.com"
+        },
+        "saldo": 1000.00,
+        "tipo": "CORRENTE"
+      }
+    },
+    "DELETE /api/contas/{id}": {
+      "description": "Excluir conta",
+      "response": "204 No Content"
+    },
+    "POST /api/contas/{id}/deposito": {
+      "description": "Realizar depósito",
+      "request": {
+        "valor": 500.00
+      },
+      "response": {
+        "id": 1,
+        "numero": "12345-6",
+        "cliente": {
+          "id": 1,
+          "nome": "João Silva",
+          "cpf": "123.456.789-00",
+          "email": "joao@email.com"
+        },
+        "saldo": 1500.00,
+        "tipo": "CORRENTE"
+      }
+    },
+    "POST /api/contas/{id}/saque": {
+      "description": "Realizar saque",
+      "request": {
+        "valor": 200.00
+      },
+      "response": {
+        "id": 1,
+        "numero": "12345-6",
+        "cliente": {
+          "id": 1,
+          "nome": "João Silva",
+          "cpf": "123.456.789-00",
+          "email": "joao@email.com"
+        },
+        "saldo": 1300.00,
+        "tipo": "CORRENTE"
+      }
+    }
+  },
+  "transacoes": {
+    "GET /api/transacoes": {
+      "description": "Listar todas as transações",
+      "response": [
+        {
+          "id": 1,
+          "conta": {
+            "id": 1,
+            "numero": "12345-6",
+            "cliente": {
+              "id": 1,
+              "nome": "João Silva",
+              "cpf": "123.456.789-00",
+              "email": "joao@email.com"
+            }
+          },
+          "tipo": "DEPOSITO",
+          "valor": 500.00,
+          "dataHora": "2024-01-15T10:30:00Z",
+          "requestId": "550e8400-e29b-41d4-a716-446655440000"
+        }
+      ]
+    },
+    "GET /api/transacoes/{id}": {
+      "description": "Buscar transação por ID",
+      "response": {
+        "id": 1,
+        "conta": {
+          "id": 1,
+          "numero": "12345-6",
+          "cliente": {
+            "id": 1,
+            "nome": "João Silva",
+            "cpf": "123.456.789-00",
+            "email": "joao@email.com"
+          }
+        },
+        "tipo": "DEPOSITO",
+        "valor": 500.00,
+        "dataHora": "2024-01-15T10:30:00Z",
+        "requestId": "550e8400-e29b-41d4-a716-446655440000"
+      }
+    },
+    "GET /api/transacoes/conta/{contaId}": {
+      "description": "Listar transações de uma conta",
+      "response": [
+        {
+          "id": 1,
+          "conta": {
+            "id": 1,
+            "numero": "12345-6",
+            "cliente": {
+              "id": 1,
+              "nome": "João Silva",
+              "cpf": "123.456.789-00",
+              "email": "joao@email.com"
+            }
+          },
+          "tipo": "DEPOSITO",
+          "valor": 500.00,
+          "dataHora": "2024-01-15T10:30:00Z",
+          "requestId": "550e8400-e29b-41d4-a716-446655440000"
+        }
+      ]
+    },
+    "GET /api/transacoes/cliente/{clienteId}": {
+      "description": "Listar transações de um cliente",
+      "response": [
+        {
+          "id": 1,
+          "conta": {
+            "id": 1,
+            "numero": "12345-6",
+            "cliente": {
+              "id": 1,
+              "nome": "João Silva",
+              "cpf": "123.456.789-00",
+              "email": "joao@email.com"
+            }
+          },
+          "tipo": "DEPOSITO",
+          "valor": 500.00,
+          "dataHora": "2024-01-15T10:30:00Z",
+          "requestId": "550e8400-e29b-41d4-a716-446655440000"
+        }
+      ]
+    },
+    "DELETE /api/transacoes/{id}": {
+      "description": "Excluir transação",
+      "response": "204 No Content"
+    }
+  }
+}

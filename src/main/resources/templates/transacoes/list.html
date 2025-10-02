@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Transações</h4>
+            <a th:href="@{/ui/contas}" class="btn btn-secondary">Voltar para Contas</a>
+          </div>
+          <div class="card-body">
+            <div th:if="${conta}" class="alert alert-info">
+              <strong>Conta:</strong> <span th:text="${conta.numero}"></span> - 
+              <strong>Cliente:</strong> <span th:text="${conta.cliente.nome}"></span> - 
+              <strong>Saldo:</strong> R$ <span th:text="${#numbers.formatDecimal(conta.saldo, 1, 2)}"></span>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Valor</th>
+                    <th>Data/Hora</th>
+                    <th>Conta</th>
+                    <th>Cliente</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="transacao : ${transacoes}">
+                    <td th:text="${transacao.id}"></td>
+                    <td>
+                      <span th:if="${transacao.tipo == 'DEPOSITO'}" class="badge bg-success">Depósito</span>
+                      <span th:if="${transacao.tipo == 'SAQUE'}" class="badge bg-danger">Saque</span>
+                      <span th:if="${transacao.tipo == 'TRANSFERENCIA'}" class="badge bg-info">Transferência</span>
+                    </td>
+                    <td>R$ <span th:text="${#numbers.formatDecimal(transacao.valor, 1, 2)}"></span></td>
+                    <td th:text="${#temporals.format(transacao.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${transacao.conta.numero}"></td>
+                    <td th:text="${transacao.conta.cliente.nome}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</html>

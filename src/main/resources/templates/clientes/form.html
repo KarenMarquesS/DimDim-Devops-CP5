@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<section>
+<div class="bank-card p-3">
+  <h2 th:text="${cliente.id} != null ? 'Editar Cliente' : 'Novo Cliente'"></h2>
+  <form th:action="@{/ui/clientes}" th:object="${cliente}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <div class="mb-3">
+      <label class="form-label">Nome</label>
+      <input class="form-control" th:field="*{nome}" required/>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">CPF</label>
+      <input class="form-control" th:field="*{cpf}"/>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input class="form-control" th:field="*{email}" type="email"/>
+    </div>
+    <button class="btn btn-primary" type="submit">Salvar</button>
+    <a th:href="@{/ui/clientes}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+</section>
+</html>

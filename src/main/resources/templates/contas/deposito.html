@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<section>
+<div class="bank-card p-3">
+  <h2>Depósito - Conta <span th:text="${conta.numero}"></span></h2>
+  <form th:action="@{'/ui/contas/deposito/' + ${conta.id}}" method="post">
+    <div class="mb-3"><label class="form-label">Valor</label><input name="valor" class="form-control" required/></div>
+    <button class="btn btn-success" type="submit">Depositar</button>
+    <a th:href="@{/ui/contas}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+</section>
+</html>

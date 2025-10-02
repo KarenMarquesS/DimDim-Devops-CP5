@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<section>
+  <div class="row">
+    <div class="col-md-8 offset-md-2 text-center bank-card p-4">
+      <h1>Bem-vindo ao DimDim Bank</h1>
+      <p>Gerencie clientes e contas com segurança.</p>
+      <a class="btn btn-primary m-2" th:href="@{/ui/clientes}">Gerenciar Clientes</a>
+      <a class="btn btn-outline-primary m-2" th:href="@{/ui/contas}">Gerenciar Contas</a>
+    </div>
+  </div>
+</section>
+</html>

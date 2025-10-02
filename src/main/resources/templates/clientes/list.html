@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<section>
+<div class="bank-card p-3">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Clientes</h2>
+    <a class="btn btn-success" th:href="@{/ui/clientes/novo}">Novo Cliente</a>
+  </div>
+  <table class="table table-striped mt-3">
+    <thead><tr><th>ID</th><th>Nome</th><th>CPF</th><th>Email</th><th>Ações</th></tr></thead>
+    <tbody>
+      <tr th:each="cliente : ${clientes}">
+        <td th:text="${cliente.id}"></td>
+        <td th:text="${cliente.nome}"></td>
+        <td th:text="${cliente.cpf}"></td>
+        <td th:text="${cliente.email}"></td>
+        <td>
+          <a th:href="@{'/ui/clientes/editar/' + ${cliente.id}}" class="btn btn-sm btn-primary">Editar</a>
+          <a th:href="@{'/ui/clientes/excluir/' + ${cliente.id}}" class="btn btn-sm btn-danger">Excluir</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+</html>
