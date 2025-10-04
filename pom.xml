@@ -135,15 +135,6 @@
             <version>2.2.0</version>
         </dependency>
 
-        <!-- Azure Application Insights -->
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>applicationinsights-agent</artifactId>
-            <version>3.5.2</version>
-        </dependency>
-
-
-
         <!-- Testes -->
         <dependency>
             <groupId>io.projectreactor</groupId>
