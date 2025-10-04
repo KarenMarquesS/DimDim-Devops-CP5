@@ -1,26 +1,174 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
 <section>
-<div class="bank-card p-3">
-  <div class="d-flex justify-content-between align-items-center">
-    <h2>Clientes</h2>
-    <a class="btn btn-success" th:href="@{/ui/clientes/novo}">Novo Cliente</a>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1 class="mb-0">
+          <i class="fas fa-users me-3"></i>Gerenciar Clientes
+        </h1>
+        <p class="mb-0 mt-2 opacity-75">Gerencie todos os clientes do banco de forma eficiente</p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a class="btn btn-light btn-lg" th:href="@{/ui/clientes/novo}">
+          <i class="fas fa-user-plus me-2"></i>Novo Cliente
+        </a>
+      </div>
+    </div>
   </div>
-  <table class="table table-striped mt-3">
-    <thead><tr><th>ID</th><th>Nome</th><th>CPF</th><th>Email</th><th>Ações</th></tr></thead>
-    <tbody>
-      <tr th:each="cliente : ${clientes}">
-        <td th:text="${cliente.id}"></td>
-        <td th:text="${cliente.nome}"></td>
-        <td th:text="${cliente.cpf}"></td>
-        <td th:text="${cliente.email}"></td>
-        <td>
-          <a th:href="@{'/ui/clientes/editar/' + ${cliente.id}}" class="btn btn-sm btn-primary">Editar</a>
-          <a th:href="@{'/ui/clientes/excluir/' + ${cliente.id}}" class="btn btn-sm btn-danger">Excluir</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+
+  <!-- Stats Cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <div class="bank-card text-center p-4">
+        <div class="stats-icon mb-3">
+          <i class="fas fa-users text-primary" style="font-size: 2.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-1" th:text="${clientes != null ? #lists.size(clientes) : 0}">0</h3>
+        <p class="text-muted mb-0">Total de Clientes</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bank-card text-center p-4">
+        <div class="stats-icon mb-3">
+          <i class="fas fa-user-check text-success" style="font-size: 2.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-1">100%</h3>
+        <p class="text-muted mb-0">Clientes Ativos</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bank-card text-center p-4">
+        <div class="stats-icon mb-3">
+          <i class="fas fa-chart-line text-warning" style="font-size: 2.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-1">+15%</h3>
+        <p class="text-muted mb-0">Crescimento</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bank-card text-center p-4">
+        <div class="stats-icon mb-3">
+          <i class="fas fa-star text-info" style="font-size: 2.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-1">4.9</h3>
+        <p class="text-muted mb-0">Satisfação</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clients Table -->
+  <div class="bank-card">
+    <div class="card-header bg-transparent border-0 p-4">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h4 class="mb-0">
+            <i class="fas fa-list me-2"></i>Lista de Clientes
+          </h4>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-search"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Buscar clientes..." id="searchInput">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0" id="clientsTable">
+          <thead>
+            <tr>
+              <th class="border-0">
+                <i class="fas fa-hashtag me-2"></i>ID
+              </th>
+              <th class="border-0">
+                <i class="fas fa-user me-2"></i>Nome
+              </th>
+              <th class="border-0">
+                <i class="fas fa-id-card me-2"></i>CPF
+              </th>
+              <th class="border-0">
+                <i class="fas fa-envelope me-2"></i>Email
+              </th>
+              <th class="border-0 text-center">
+                <i class="fas fa-cogs me-2"></i>Ações
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="cliente : ${clientes}">
+              <td>
+                <span class="badge bg-primary">#<span th:text="${cliente.id}"></span></span>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="avatar me-3">
+                    <i class="fas fa-user-circle text-muted" style="font-size: 2rem;"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold" th:text="${cliente.nome}"></div>
+                    <small class="text-muted">Cliente</small>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <code th:text="${cliente.cpf}"></code>
+              </td>
+              <td>
+                <a th:href="'mailto:' + ${cliente.email}" th:text="${cliente.email}" class="text-decoration-none"></a>
+              </td>
+              <td class="text-center">
+                <div class="action-buttons">
+                  <a th:href="@{'/ui/clientes/editar/' + ${cliente.id}}" 
+                     class="btn btn-sm btn-outline-primary" 
+                     title="Editar Cliente">
+                    <i class="fas fa-edit"></i>
+                  </a>
+                  <a th:href="@{'/ui/clientes/excluir/' + ${cliente.id}}" 
+                     class="btn btn-sm btn-outline-danger" 
+                     title="Excluir Cliente"
+                     onclick="return confirm('Tem certeza que deseja excluir este cliente?')">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchInput');
+  const table = document.getElementById('clientsTable');
+  const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+  
+  searchInput.addEventListener('keyup', function() {
+    const filter = this.value.toLowerCase();
+    
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const cells = row.getElementsByTagName('td');
+      let found = false;
+      
+      for (let j = 0; j < cells.length - 1; j++) { // Exclude actions column
+        if (cells[j].textContent.toLowerCase().indexOf(filter) > -1) {
+          found = true;
+          break;
+        }
+      }
+      
+      row.style.display = found ? '' : 'none';
+    }
+  });
+});
+</script>
 </html>

@@ -1,13 +1,209 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
 <section>
-<div class="bank-card p-3">
-  <h2>Saque - Conta <span th:text="${conta.numero}"></span></h2>
-  <form th:action="@{'/ui/contas/saque/' + ${conta.id}}" method="post">
-    <div class="mb-3"><label class="form-label">Valor</label><input name="valor" class="form-control" required/></div>
-    <button class="btn btn-warning" type="submit">Sacar</button>
-    <a th:href="@{/ui/contas}" class="btn btn-secondary">Cancelar</a>
-  </form>
-</div>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1 class="mb-0">
+          <i class="fas fa-minus-circle me-3"></i>Saque
+        </h1>
+        <p class="mb-0 mt-2 opacity-75">
+          Realize um saque da conta <strong th:text="${conta.numero}"></strong>
+        </p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a th:href="@{/ui/contas}" class="btn btn-outline-light btn-lg">
+          <i class="fas fa-arrow-left me-2"></i>Voltar
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Info -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-8">
+      <div class="bank-card p-4">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h4 class="fw-bold mb-2">
+              <i class="fas fa-credit-card me-2"></i>Conta <span th:text="${conta.numero}"></span>
+            </h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-user me-2 text-muted"></i>
+                  <span th:text="${conta.cliente != null ? conta.cliente.nome : 'Cliente não encontrado'}"></span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-dollar-sign me-2 text-muted"></i>
+                  <span class="fw-bold text-success fs-5" th:text="'R$ ' + ${#numbers.formatDecimal(conta.saldo, 1, 2)}"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 text-md-end">
+            <div class="account-status">
+              <span class="badge bg-success fs-6">
+                <i class="fas fa-check-circle me-1"></i>Ativa
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Withdrawal Form -->
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="bank-card p-4">
+        <div class="form-header text-center mb-4">
+          <div class="form-icon mb-3">
+            <i class="fas fa-minus-circle text-warning" style="font-size: 4rem;"></i>
+          </div>
+          <h3 class="fw-bold">Realizar Saque</h3>
+          <p class="text-muted">Digite o valor que deseja sacar</p>
+        </div>
+
+        <form th:action="@{'/ui/contas/saque/' + ${conta.id}}" method="post" class="needs-validation" novalidate>
+          <div class="mb-4">
+            <div class="form-floating">
+              <input type="number" 
+                     class="form-control" 
+                     name="valor" 
+                     id="valor"
+                     placeholder="0,00"
+                     step="0.01"
+                     min="0.01"
+                     th:max="${conta.saldo}"
+                     required/>
+              <label for="valor">
+                <i class="fas fa-dollar-sign me-2"></i>Valor do Saque
+              </label>
+              <div class="invalid-feedback">
+                Por favor, insira um valor válido (máximo R$ <span th:text="${#numbers.formatDecimal(conta.saldo, 1, 2)}"></span>).
+              </div>
+            </div>
+            <div class="form-text">
+              <i class="fas fa-info-circle me-1"></i>
+              Saldo disponível: R$ <span th:text="${#numbers.formatDecimal(conta.saldo, 1, 2)}"></span>
+            </div>
+          </div>
+
+          <!-- Quick Amount Buttons -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">Valores Rápidos:</label>
+            <div class="row g-2">
+              <div class="col-3">
+                <button type="button" class="btn btn-outline-warning w-100" onclick="setAmount(50)">R$ 50</button>
+              </div>
+              <div class="col-3">
+                <button type="button" class="btn btn-outline-warning w-100" onclick="setAmount(100)">R$ 100</button>
+              </div>
+              <div class="col-3">
+                <button type="button" class="btn btn-outline-warning w-100" onclick="setAmount(500)">R$ 500</button>
+              </div>
+              <div class="col-3">
+                <button type="button" class="btn btn-outline-warning w-100" onclick="setMaxAmount()">Máximo</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-6">
+                <button type="submit" class="btn btn-warning btn-lg w-100">
+                  <i class="fas fa-minus-circle me-2"></i>Sacar
+                </button>
+              </div>
+              <div class="col-md-6">
+                <a th:href="@{/ui/contas}" class="btn btn-outline-secondary btn-lg w-100">
+                  <i class="fas fa-times me-2"></i>Cancelar
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Security Notice -->
+  <div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+      <div class="bank-card p-4">
+        <div class="row align-items-center">
+          <div class="col-md-2 text-center">
+            <i class="fas fa-shield-alt text-warning" style="font-size: 3rem;"></i>
+          </div>
+          <div class="col-md-10">
+            <h5 class="fw-bold mb-2">Transação Segura</h5>
+            <p class="mb-0 text-muted">
+              Todas as transações são protegidas com criptografia de ponta a ponta e monitoradas 24/7 
+              para garantir a segurança dos seus dados e dinheiro.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+function setAmount(value) {
+  const maxValue = parseFloat(document.getElementById('valor').getAttribute('th:max') || '0');
+  if (value <= maxValue) {
+    document.getElementById('valor').value = value;
+  } else {
+    alert('Valor excede o saldo disponível!');
+  }
+}
+
+function setMaxAmount() {
+  const maxValue = parseFloat(document.getElementById('valor').getAttribute('th:max') || '0');
+  document.getElementById('valor').value = maxValue;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Form validation
+  const form = document.querySelector('.needs-validation');
+  form.addEventListener('submit', function(event) {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+  });
+
+  // Currency formatting and validation
+  const valorInput = document.getElementById('valor');
+  const maxValue = parseFloat(valorInput.getAttribute('th:max') || '0');
+  
+  valorInput.addEventListener('input', function(e) {
+    let value = parseFloat(e.target.value);
+    if (value < 0) {
+      e.target.value = 0;
+    } else if (value > maxValue) {
+      e.target.value = maxValue;
+      alert('Valor excede o saldo disponível!');
+    }
+  });
+
+  // Real-time validation
+  valorInput.addEventListener('blur', function() {
+    const value = parseFloat(this.value);
+    if (this.checkValidity() && value <= maxValue) {
+      this.classList.remove('is-invalid');
+      this.classList.add('is-valid');
+    } else {
+      this.classList.remove('is-valid');
+      this.classList.add('is-invalid');
+    }
+  });
+});
+</script>
 </html>

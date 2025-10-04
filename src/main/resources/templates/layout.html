@@ -1,30 +1,123 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DimDim Bank</title>
-  <link rel="stylesheet" th:href="@{/css/bank.css}" />
+  <meta name="description" content="DimDim Bank - Sistema de gerenciamento bancário moderno e seguro" />
+  <title th:text="${title != null ? title + ' - DimDim Bank' : 'DimDim Bank'}">DimDim Bank</title>
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" />
+  
+  <!-- Custom Bank CSS -->
+  <link rel="stylesheet" th:href="@{/css/bank.css}" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" />
 </head>
 <body class="bank-bg">
-<nav class="navbar navbar-expand-lg navbar-dark bank-navbar">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">DimDim Bank</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a class="nav-link" th:href="@{/ui/clientes}">Clientes</a></li>
-        <li class="nav-item"><a class="nav-link" th:href="@{/ui/contas}">Contas</a></li>
-      </ul>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bank-navbar fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <div class="bank-logo me-2">🏦</div>
+        <span class="fw-bold">DimDim Bank</span>
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/}" th:classappend="${#httpServletRequest.requestURI == '/'} ? 'active'">
+              <i class="fas fa-home me-1"></i>Início
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/ui/clientes}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/clientes')} ? 'active'">
+              <i class="fas fa-users me-1"></i>Clientes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/ui/contas}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/contas')} ? 'active'">
+              <i class="fas fa-credit-card me-1"></i>Contas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/ui/transacoes}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/transacoes')} ? 'active'">
+              <i class="fas fa-exchange-alt me-1"></i>Transações
+            </a>
+          </li>
+        </ul>
+        
+        <div class="navbar-nav">
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-1"></i>Admin
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configurações</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</nav>
-<div class="container mt-4">
-  <div th:replace="~{::body}"></div>
-</div>
-<footer class="bank-footer mt-5">
-  <div class="container">&copy; DimDim Bank - 2025</div>
-</footer>
-<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" style="padding-top: 100px;">
+    <div class="container-fluid px-4">
+      <div th:replace="~{::body}"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bank-footer">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="mb-0">&copy; 2025 DimDim Bank. Todos os direitos reservados.</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <div class="footer-links">
+            <a href="#" class="text-white me-3">Política de Privacidade</a>
+            <a href="#" class="text-white me-3">Termos de Uso</a>
+            <a href="#" class="text-white">Suporte</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+  <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+  
+  <!-- Custom JavaScript -->
+  <script>
+    // Add loading states to forms
+    document.addEventListener('DOMContentLoaded', function() {
+      const forms = document.querySelectorAll('form');
+      forms.forEach(form => {
+        form.addEventListener('submit', function() {
+          const submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processando...';
+            submitBtn.disabled = true;
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

@@ -1,29 +1,203 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
 <section>
-<div class="bank-card p-3">
-  <div class="d-flex justify-content-between align-items-center">
-    <h2>Contas</h2>
-    <a class="btn btn-success" th:href="@{/ui/contas/novo}">Abrir Conta</a>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1 class="mb-0">
+          <i class="fas fa-credit-card me-3"></i>Gerenciar Contas
+        </h1>
+        <p class="mb-0 mt-2 opacity-75">Gerencie todas as contas bancárias e suas operações</p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a class="btn btn-light btn-lg" th:href="@{/ui/contas/novo}">
+          <i class="fas fa-plus-circle me-2"></i>Abrir Conta
+        </a>
+      </div>
+    </div>
   </div>
-  <table class="table table-striped mt-3">
-    <thead><tr><th>ID</th><th>Número</th><th>Cliente</th><th>Saldo</th><th>Ações</th></tr></thead>
-    <tbody>
-      <tr th:each="conta : ${contas}">
-        <td th:text="${conta.id}"></td>
-        <td th:text="${conta.numero}"></td>
-        <td th:text="${conta.cliente != null ? conta.cliente.nome : ' - '}"></td>
-        <td th:text="${conta.saldo}"></td>
-        <td>
-          <a th:href="@{'/ui/contas/deposito/' + ${conta.id}}" class="btn btn-sm btn-success">Depósito</a>
-          <a th:href="@{'/ui/contas/saque/' + ${conta.id}}" class="btn btn-sm btn-warning">Saque</a>
-          <a th:href="@{'/ui/contas/editar/' + ${conta.id}}" class="btn btn-sm btn-primary">Editar</a>
-          <a th:href="@{'/ui/transacoes/conta/' + ${conta.id}}" class="btn btn-sm btn-info">Transações</a>
-          <a th:href="@{'/ui/contas/excluir/' + ${conta.id}}" class="btn btn-sm btn-danger">Excluir</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+
+  <!-- Stats Cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <div class="bank-card text-center p-4">
+        <div class="stats-icon mb-3">
+          <i class="fas fa-credit-card text-primary" style="font-size: 2.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-1" th:text="${contas != null ? #lists.size(contas) : 0}">0</h3>
+        <p class="text-muted mb-0">Total de Contas</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bank-card text-center p-4">
+        <div class="stats-icon mb-3">
+          <i class="fas fa-dollar-sign text-success" style="font-size: 2.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-1">R$ 0,00</h3>
+        <p class="text-muted mb-0">Saldo Total</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bank-card text-center p-4">
+        <div class="stats-icon mb-3">
+          <i class="fas fa-exchange-alt text-warning" style="font-size: 2.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-1">0</h3>
+        <p class="text-muted mb-0">Transações Hoje</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bank-card text-center p-4">
+        <div class="stats-icon mb-3">
+          <i class="fas fa-chart-line text-info" style="font-size: 2.5rem;"></i>
+        </div>
+        <h3 class="fw-bold mb-1">+12%</h3>
+        <p class="text-muted mb-0">Crescimento</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accounts Table -->
+  <div class="bank-card">
+    <div class="card-header bg-transparent border-0 p-4">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h4 class="mb-0">
+            <i class="fas fa-list me-2"></i>Lista de Contas
+          </h4>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-search"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Buscar contas..." id="searchInput">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0" id="accountsTable">
+          <thead>
+            <tr>
+              <th class="border-0">
+                <i class="fas fa-hashtag me-2"></i>ID
+              </th>
+              <th class="border-0">
+                <i class="fas fa-credit-card me-2"></i>Número
+              </th>
+              <th class="border-0">
+                <i class="fas fa-user me-2"></i>Cliente
+              </th>
+              <th class="border-0">
+                <i class="fas fa-dollar-sign me-2"></i>Saldo
+              </th>
+              <th class="border-0">
+                <i class="fas fa-tag me-2"></i>Tipo
+              </th>
+              <th class="border-0 text-center">
+                <i class="fas fa-cogs me-2"></i>Ações
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="conta : ${contas}">
+              <td>
+                <span class="badge bg-primary">#<span th:text="${conta.id}"></span></span>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="account-icon me-3">
+                    <i class="fas fa-credit-card text-primary" style="font-size: 1.5rem;"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold" th:text="${conta.numero}"></div>
+                    <small class="text-muted">Conta Bancária</small>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div th:if="${conta.cliente != null}">
+                  <div class="fw-bold" th:text="${conta.cliente.nome}"></div>
+                  <small class="text-muted" th:text="${conta.cliente.cpf}"></small>
+                </div>
+                <div th:if="${conta.cliente == null}" class="text-muted">
+                  <i class="fas fa-exclamation-triangle me-1"></i>Sem cliente
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <span class="fw-bold text-success fs-5" th:text="'R$ ' + ${#numbers.formatDecimal(conta.saldo, 1, 2)}"></span>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-info" th:text="${conta.tipo != null ? conta.tipo : 'Corrente'}"></span>
+              </td>
+              <td class="text-center">
+                <div class="action-buttons">
+                  <a th:href="@{'/ui/contas/deposito/' + ${conta.id}}" 
+                     class="btn btn-sm btn-outline-success" 
+                     title="Depósito">
+                    <i class="fas fa-plus"></i>
+                  </a>
+                  <a th:href="@{'/ui/contas/saque/' + ${conta.id}}" 
+                     class="btn btn-sm btn-outline-warning" 
+                     title="Saque">
+                    <i class="fas fa-minus"></i>
+                  </a>
+                  <a th:href="@{'/ui/transacoes/conta/' + ${conta.id}}" 
+                     class="btn btn-sm btn-outline-info" 
+                     title="Transações">
+                    <i class="fas fa-exchange-alt"></i>
+                  </a>
+                  <a th:href="@{'/ui/contas/editar/' + ${conta.id}}" 
+                     class="btn btn-sm btn-outline-primary" 
+                     title="Editar">
+                    <i class="fas fa-edit"></i>
+                  </a>
+                  <a th:href="@{'/ui/contas/excluir/' + ${conta.id}}" 
+                     class="btn btn-sm btn-outline-danger" 
+                     title="Excluir"
+                     onclick="return confirm('Tem certeza que deseja excluir esta conta?')">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchInput');
+  const table = document.getElementById('accountsTable');
+  const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+  
+  searchInput.addEventListener('keyup', function() {
+    const filter = this.value.toLowerCase();
+    
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const cells = row.getElementsByTagName('td');
+      let found = false;
+      
+      for (let j = 0; j < cells.length - 1; j++) { // Exclude actions column
+        if (cells[j].textContent.toLowerCase().indexOf(filter) > -1) {
+          found = true;
+          break;
+        }
+      }
+      
+      row.style.display = found ? '' : 'none';
+    }
+  });
+});
+</script>
 </html>

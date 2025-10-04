@@ -1,26 +1,201 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
 <section>
-<div class="bank-card p-3">
-  <h2>Abrir Conta</h2>
-  <form th:action="@{/ui/contas}" th:object="${conta}" method="post">
-    <div class="mb-3">
-      <label class="form-label">Número</label>
-      <input class="form-control" th:field="*{numero}" required/>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1 class="mb-0">
+          <i class="fas fa-plus-circle me-3"></i>Abrir Nova Conta
+        </h1>
+        <p class="mb-0 mt-2 opacity-75">Cadastre uma nova conta bancária no sistema</p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a th:href="@{/ui/contas}" class="btn btn-outline-light btn-lg">
+          <i class="fas fa-arrow-left me-2"></i>Voltar
+        </a>
+      </div>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Cliente</label>
-      <select class="form-select" th:field="*{cliente.id}" name="cliente.id" required>
-        <option th:each="c : ${clientes}" th:value="${c.id}" th:text="${c.nome}"></option>
-      </select>
+  </div>
+
+  <!-- Form Card -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="bank-card p-4">
+        <div class="form-header text-center mb-4">
+          <div class="form-icon mb-3">
+            <i class="fas fa-credit-card text-primary" style="font-size: 4rem;"></i>
+          </div>
+          <h3 class="fw-bold">Dados da Conta</h3>
+          <p class="text-muted">Preencha os dados para abrir uma nova conta bancária</p>
+        </div>
+
+        <form th:action="@{/ui/contas}" th:object="${conta}" method="post" class="needs-validation" novalidate>
+          <div class="row g-4">
+            <!-- Número da Conta -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" 
+                       class="form-control" 
+                       th:field="*{numero}" 
+                       id="numero"
+                       placeholder="Número da conta"
+                       required
+                       pattern="[0-9]+"
+                       minlength="4"
+                       maxlength="20"/>
+                <label for="numero">
+                  <i class="fas fa-hashtag me-2"></i>Número da Conta
+                </label>
+                <div class="invalid-feedback">
+                  Por favor, insira um número de conta válido (apenas números).
+                </div>
+              </div>
+            </div>
+
+            <!-- Tipo da Conta -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" 
+                        th:field="*{tipo}" 
+                        id="tipo"
+                        required>
+                  <option value="">Selecione o tipo</option>
+                  <option value="Corrente">Conta Corrente</option>
+                  <option value="Poupança">Conta Poupança</option>
+                  <option value="Salário">Conta Salário</option>
+                </select>
+                <label for="tipo">
+                  <i class="fas fa-tag me-2"></i>Tipo da Conta
+                </label>
+                <div class="invalid-feedback">
+                  Por favor, selecione um tipo de conta.
+                </div>
+              </div>
+            </div>
+
+            <!-- Cliente -->
+            <div class="col-md-12">
+              <div class="form-floating">
+                <select class="form-select" 
+                        th:field="*{cliente.id}" 
+                        name="cliente.id" 
+                        id="cliente"
+                        required>
+                  <option value="">Selecione um cliente</option>
+                  <option th:each="c : ${clientes}" 
+                          th:value="${c.id}" 
+                          th:text="${c.nome + ' - ' + c.cpf}">
+                  </option>
+                </select>
+                <label for="cliente">
+                  <i class="fas fa-user me-2"></i>Cliente
+                </label>
+                <div class="invalid-feedback">
+                  Por favor, selecione um cliente.
+                </div>
+                <div class="form-text">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Se não houver clientes cadastrados, 
+                  <a th:href="@{/ui/clientes/novo}" class="text-decoration-none">cadastre um novo cliente</a> primeiro.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions mt-5 pt-4 border-top">
+            <div class="row">
+              <div class="col-md-6">
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                  <i class="fas fa-plus-circle me-2"></i>Abrir Conta
+                </button>
+              </div>
+              <div class="col-md-6">
+                <a th:href="@{/ui/contas}" class="btn btn-outline-secondary btn-lg w-100">
+                  <i class="fas fa-times me-2"></i>Cancelar
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Tipo</label>
-      <input class="form-control" th:field="*{tipo}"/>
+  </div>
+
+  <!-- Help Section -->
+  <div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+      <div class="bank-card p-4">
+        <h5 class="fw-bold mb-3">
+          <i class="fas fa-info-circle me-2"></i>Tipos de Conta
+        </h5>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-university text-primary me-3"></i>
+              <div>
+                <div class="fw-bold">Conta Corrente</div>
+                <small class="text-muted">Para movimentação diária</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-piggy-bank text-success me-3"></i>
+              <div>
+                <div class="fw-bold">Conta Poupança</div>
+                <small class="text-muted">Para investimentos</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-briefcase text-warning me-3"></i>
+              <div>
+                <div class="fw-bold">Conta Salário</div>
+                <small class="text-muted">Para recebimento</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="btn btn-primary" type="submit">Abrir</button>
-    <a th:href="@{/ui/contas}" class="btn btn-secondary">Cancelar</a>
-  </form>
-</div>
+  </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Form validation
+  const form = document.querySelector('.needs-validation');
+  form.addEventListener('submit', function(event) {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+  });
+
+  // Account number formatting
+  const numeroInput = document.getElementById('numero');
+  numeroInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    e.target.value = value;
+  });
+
+  // Real-time validation feedback
+  const inputs = form.querySelectorAll('input[required], select[required]');
+  inputs.forEach(input => {
+    input.addEventListener('change', function() {
+      if (this.checkValidity()) {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+      } else {
+        this.classList.remove('is-valid');
+        this.classList.add('is-invalid');
+      }
+    });
+  });
+});
+</script>
 </html>

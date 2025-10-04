@@ -1,25 +1,201 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
 <section>
-<div class="bank-card p-3">
-  <h2 th:text="${cliente.id} != null ? 'Editar Cliente' : 'Novo Cliente'"></h2>
-  <form th:action="@{/ui/clientes}" th:object="${cliente}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <div class="mb-3">
-      <label class="form-label">Nome</label>
-      <input class="form-control" th:field="*{nome}" required/>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1 class="mb-0">
+          <i class="fas fa-user-edit me-3"></i>
+          <span th:text="${cliente.id} != null ? 'Editar Cliente' : 'Novo Cliente'"></span>
+        </h1>
+        <p class="mb-0 mt-2 opacity-75">
+          <span th:text="${cliente.id} != null ? 'Atualize as informações do cliente' : 'Cadastre um novo cliente no sistema'"></span>
+        </p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a th:href="@{/ui/clientes}" class="btn btn-outline-light btn-lg">
+          <i class="fas fa-arrow-left me-2"></i>Voltar
+        </a>
+      </div>
     </div>
-    <div class="mb-3">
-      <label class="form-label">CPF</label>
-      <input class="form-control" th:field="*{cpf}"/>
+  </div>
+
+  <!-- Form Card -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="bank-card p-4">
+        <div class="form-header text-center mb-4">
+          <div class="form-icon mb-3">
+            <i class="fas fa-user-circle text-primary" style="font-size: 4rem;"></i>
+          </div>
+          <h3 class="fw-bold">
+            <span th:text="${cliente.id} != null ? 'Editar Informações' : 'Dados do Cliente'"></span>
+          </h3>
+          <p class="text-muted">
+            <span th:text="${cliente.id} != null ? 'Atualize os dados do cliente' : 'Preencha os dados para cadastrar o cliente'"></span>
+          </p>
+        </div>
+
+        <form th:action="@{/ui/clientes}" th:object="${cliente}" method="post" class="needs-validation" novalidate>
+          <input type="hidden" th:field="*{id}"/>
+          
+          <div class="row g-4">
+            <!-- Nome -->
+            <div class="col-md-12">
+              <div class="form-floating">
+                <input type="text" 
+                       class="form-control" 
+                       th:field="*{nome}" 
+                       id="nome"
+                       placeholder="Nome completo"
+                       required
+                       minlength="3"
+                       maxlength="100"/>
+                <label for="nome">
+                  <i class="fas fa-user me-2"></i>Nome Completo
+                </label>
+                <div class="invalid-feedback">
+                  Por favor, insira um nome válido (mínimo 3 caracteres).
+                </div>
+              </div>
+            </div>
+
+            <!-- CPF -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" 
+                       class="form-control" 
+                       th:field="*{cpf}" 
+                       id="cpf"
+                       placeholder="000.000.000-00"
+                       pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}"
+                       maxlength="14"/>
+                <label for="cpf">
+                  <i class="fas fa-id-card me-2"></i>CPF
+                </label>
+                <div class="invalid-feedback">
+                  Por favor, insira um CPF válido no formato 000.000.000-00.
+                </div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="email" 
+                       class="form-control" 
+                       th:field="*{email}" 
+                       id="email"
+                       placeholder="email@exemplo.com"
+                       required/>
+                <label for="email">
+                  <i class="fas fa-envelope me-2"></i>Email
+                </label>
+                <div class="invalid-feedback">
+                  Por favor, insira um email válido.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions mt-5 pt-4 border-top">
+            <div class="row">
+              <div class="col-md-6">
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                  <i class="fas fa-save me-2"></i>
+                  <span th:text="${cliente.id} != null ? 'Atualizar Cliente' : 'Cadastrar Cliente'"></span>
+                </button>
+              </div>
+              <div class="col-md-6">
+                <a th:href="@{/ui/clientes}" class="btn btn-outline-secondary btn-lg w-100">
+                  <i class="fas fa-times me-2"></i>Cancelar
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input class="form-control" th:field="*{email}" type="email"/>
+  </div>
+
+  <!-- Help Section -->
+  <div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+      <div class="bank-card p-4">
+        <h5 class="fw-bold mb-3">
+          <i class="fas fa-info-circle me-2"></i>Informações Importantes
+        </h5>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-shield-alt text-success me-3"></i>
+              <div>
+                <div class="fw-bold">Segurança</div>
+                <small class="text-muted">Dados protegidos</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-check-circle text-primary me-3"></i>
+              <div>
+                <div class="fw-bold">Validação</div>
+                <small class="text-muted">Dados verificados</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-lock text-warning me-3"></i>
+              <div>
+                <div class="fw-bold">Privacidade</div>
+                <small class="text-muted">LGPD compliant</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="btn btn-primary" type="submit">Salvar</button>
-    <a th:href="@{/ui/clientes}" class="btn btn-secondary">Cancelar</a>
-  </form>
-</div>
+  </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Form validation
+  const form = document.querySelector('.needs-validation');
+  form.addEventListener('submit', function(event) {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+  });
+
+  // CPF formatting
+  const cpfInput = document.getElementById('cpf');
+  cpfInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    e.target.value = value;
+  });
+
+  // Real-time validation feedback
+  const inputs = form.querySelectorAll('input[required]');
+  inputs.forEach(input => {
+    input.addEventListener('blur', function() {
+      if (this.checkValidity()) {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+      } else {
+        this.classList.remove('is-valid');
+        this.classList.add('is-invalid');
+      }
+    });
+  });
+});
+</script>
 </html>
