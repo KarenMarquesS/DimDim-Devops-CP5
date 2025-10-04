@@ -3,13 +3,13 @@
     "GET /api/clientes": {
       "description": "Listar todos os clientes",
       "response": [
-        {
-          "id": 1,
-          "nome": "João Silva",
-          "cpf": "123.456.789-00",
-          "email": "joao@email.com",
-          "contas": []
-        }
+          {
+            "id": 1,
+            "nome": "João Silva",
+            "cpf": "123.456.789-00",
+            "email": "joao@email.com",
+            "contas": []
+          }
       ]
     },
     "GET /api/clientes/{id}": {

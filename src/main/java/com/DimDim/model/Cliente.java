@@ -3,7 +3,7 @@ package com.DimDim.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
-import com.dimdim.app.model.Conta;
+import com.DimDim.model.Conta;
 
 @Entity
 public class Cliente {
