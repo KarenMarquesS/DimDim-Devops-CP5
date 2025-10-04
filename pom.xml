@@ -137,17 +137,11 @@
 
         <!-- Azure Application Insights -->
         <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>applicationinsights-spring-boot-starter</artifactId>
-            <version>3.4.14</version>
+            <groupId>com.azure</groupId>
+            <artifactId>applicationinsights-agent</artifactId>
+            <version>3.5.2</version>
         </dependency>
 
-        <!-- Azure Spring Boot Starter -->
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-spring-boot-starter</artifactId>
-            <version>3.15.0</version>
-        </dependency>
 
 
         <!-- Testes -->

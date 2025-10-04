@@ -16,8 +16,8 @@ az login
 
 ### 2. Criar recursos no Azure
 ```bash
-chmod +x infra/azure/create-resources.sh
-./infra/azure/create-resources.sh
+chmod +x infra/azure/script_app.sh
+./infra/azure/script_app.sh
 ```
 
 ### 3. Executar script DDL
@@ -28,7 +28,7 @@ chmod +x infra/azure/create-resources.sh
 ### 4. Deploy da aplicação
 ```bash
 chmod +x infra/azure/deploy-app.sh
-./infra/azure/deploy-app.sh
+./infra/azure/script_app.sh
 ```
 
 ## Opção 2: Deploy via GitHub Actions

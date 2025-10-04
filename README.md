@@ -50,8 +50,8 @@ Sistema bancário completo desenvolvido em Java Spring Boot com deploy na Azure.
 az login
 
 # Criar recursos
-chmod +x infra/azure/create-resources.sh
-./infra/azure/create-resources.sh
+chmod +x infra/azure/script_app.sh
+./infra/azure/script_app.sh
 
 # Deploy da aplicação
 chmod +x infra/azure/deploy-app.sh
