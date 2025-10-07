@@ -46,16 +46,22 @@ Sistema bancário completo desenvolvido em Java Spring Boot com deploy na Azure.
 
 ### Opção 1: Azure CLI
 ```bash
-# Login no Azure
-az login
+az provider register --namespace Microsoft.Web
+az provider register --namespace Microsoft.Insights
+az provider register --namespace Microsoft.OperationalInsights
+az provider register --namespace Microsoft.ServiceLinker
+az provider register --namespace Microsoft.Sql
 
-# Criar recursos
-chmod +x infra/azure/script_app.sh
-./infra/azure/script_app.sh
+==> Power Shell
+.\create-sql-server.ps1
 
-# Deploy da aplicação
-chmod +x infra/azure/deploy-app.sh
-./infra/azure/deploy-app.sh
+==>  cloud shell
+az extension add --name application-insights
+
+chmod +x dimdimbank.sh
+
+./dimdimbank.sh
+
 ```
 
 ### Opção 2: GitHub Actions
