@@ -2,38 +2,44 @@
 -- Script DDL para DimDim Bank
 -- Banco de dados: Azure SQL Server
 
--- Tabela Cliente (Master)
-CREATE TABLE Cliente (
-    id BIGINT PRIMARY KEY IDENTITY(1,1),
-    nome NVARCHAR(100) NOT NULL,
-    cpf NVARCHAR(14) UNIQUE,
-    email NVARCHAR(100) UNIQUE,
-    data_criacao DATETIME2 DEFAULT GETDATE(),
-    data_atualizacao DATETIME2 DEFAULT GETDATE()
+-- Tabela de Clientes
+CREATE TABLE [dbo].[tb_cliente] (
+    id BIGINT NOT NULL IDENTITY,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14),
+    email VARCHAR(255),
+    PRIMARY KEY (id)
 );
 
--- Tabela Conta (Detail)
-CREATE TABLE Conta (
-    id BIGINT PRIMARY KEY IDENTITY(1,1),
-    numero NVARCHAR(20) NOT NULL UNIQUE,
+-- Tabela de Contas
+CREATE TABLE [dbo].[tb_conta] (
+    id BIGINT NOT NULL IDENTITY,
+    numero VARCHAR(50) NOT NULL,
     cliente_id BIGINT NOT NULL,
-    saldo DECIMAL(18,2) NOT NULL DEFAULT 0.00,
-    tipo NVARCHAR(20) NOT NULL DEFAULT 'CORRENTE',
-    data_criacao DATETIME2 DEFAULT GETDATE(),
-    data_atualizacao DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (cliente_id) REFERENCES Cliente(id) ON DELETE CASCADE
+    saldo DECIMAL(19,2) NOT NULL DEFAULT 0.00,
+    PRIMARY KEY (id),
+    CONSTRAINT UK_CONTA_NUMERO UNIQUE (numero)
 );
 
--- Tabela Transacao (Detail)
-CREATE TABLE Transacao (
-    id BIGINT PRIMARY KEY IDENTITY(1,1),
+-- Tabela de Transações
+CREATE TABLE [dbo].[tb_transacao] (
+    id BIGINT NOT NULL IDENTITY,
     conta_id BIGINT NOT NULL,
-    tipo NVARCHAR(20) NOT NULL,
-    valor DECIMAL(18,2) NOT NULL,
+    tipo VARCHAR(50),
+    valor DECIMAL(19,2) NOT NULL,
     data_hora DATETIME2 NOT NULL DEFAULT GETDATE(),
-    request_id NVARCHAR(50) UNIQUE,
-    FOREIGN KEY (conta_id) REFERENCES Conta(id) ON DELETE CASCADE
+    request_id VARCHAR(255),
+    PRIMARY KEY (id)
 );
+
+-- Foreign Keys
+ALTER TABLE [dbo].[tb_conta] 
+    ADD CONSTRAINT FK_CONTA_CLIENTE 
+    FOREIGN KEY (cliente_id) REFERENCES [dbo].[tb_cliente] (id);
+
+ALTER TABLE [dbo].[tb_transacao] 
+    ADD CONSTRAINT FK_TRANSACAO_CONTA 
+    FOREIGN KEY (conta_id) REFERENCES [dbo].[tb_conta] (id);
 
 -- Índices para performance
 CREATE INDEX IX_Cliente_Email ON Cliente(email);
