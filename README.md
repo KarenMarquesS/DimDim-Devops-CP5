@@ -68,10 +68,6 @@ chmod +x dimdimbank.sh
 1. Configure o secret `AZURE_WEBAPP_PUBLISH_PROFILE` no GitHub
 2. Faça push para a branch `main`
 
-### Opção 3: IDE (Eclipse/IntelliJ)
-1. Instale o Azure Toolkit
-2. Clique com botão direito no projeto
-3. Selecione "Deploy to Azure Web App"
 
 ## 📊 Estrutura do Banco
 
@@ -87,8 +83,7 @@ chmod +x dimdimbank.sh
 ## 🔗 URLs
 
 - **Web Interface**: https://dimdim-bank-app.azurewebsites.net
-- **API Documentation**: https://dimdim-bank-app.azurewebsites.net/swagger-ui.html
-- **Health Check**: https://dimdim-bank-app.azurewebsites.net/actuator/health
+
 
 ## 📚 API Endpoints
 
