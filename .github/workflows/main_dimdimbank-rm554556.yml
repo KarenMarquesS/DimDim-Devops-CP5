@@ -24,12 +24,6 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
 
-    - env: 
-        AZURE_SQL_DATASOURCE_URL: ${{ secrets.AZURE_SQL_DATASOURCE_URL }}
-        AZURE_SQL_DATASOURCE_USERNAME: ${{ secrets.AZURE_SQL_DATASOURCE_USERNAME }}
-        AZURE_SQL_DATASOURCE_PASSWORD: ${{ secrets.AZURE_SQL_DATASOURCE_PASSWORD }}
-
-
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with: 
